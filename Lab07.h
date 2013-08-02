@@ -1,32 +1,45 @@
-#ifndef LAB07_H
-#define LAB07_H
-
-#include <vector>
-#include <string>
 #include <iostream>
+#include <vector>
+#include <fstream>
+#include <string>
+#include <fstream>
+#include <algorithm>
+#include <ctime>
+#include <sstream>
 
-class person
+class face
 {
-public:
-	person()//Class constructor
-	{
-		/*var1*/ = 0;
-		/*var2*/ = 0.0;
-		/*var3*/ = "0";
-	}
+	public:
+		typedef face* fptr;
+		face();
+		face(std::string name);
+		void fillInfo(std::ifstream& file); //fills in one person's info from the text
 
-	~person()//Class destructor
-	{   /*Usually has this form. May cause errors.*/
-		delete /*var1*/;
-		delete /*var2*/;
-		delete /*var3*/;
-	}
-
-private:
-	/*Struct or sub-class object goes here*/
-	typedef	person* them;
-	vector<them>
+	private:
+		std::string name;
+		int friendCount;
+		std::vector<fptr> kin;
+		std::vector<fptr> coworker;
+		std::vector<fptr> friendz;
 
 };
 
-#endif // LAB07_H
+class master: face
+{
+	public:
+		typedef fptr facePtr;
+		master();
+		void readIn(std::string fileName); //reads in file to master vector and creates member objects
+		bool chkCommon(facePtr one, facePtr two); //used for checking existance of non mutual friends & for if graph connections
+		facePtr getLink(std::string theName); //compares string with vector of pointers to members of the network and returns its address
+
+	private:
+		int network;
+		std::vector<facePtr> members;
+};
+
+
+
+
+
+
