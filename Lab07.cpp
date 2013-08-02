@@ -1,42 +1,55 @@
-#include "lab07.h"
+#include "Lab07.h"
 
 using namespace std;
 
 void master::readIn(string fileName)
 {
+    string num;
+    int num2;
+
 	ifstream fileIn(fileName);
 	if(fileIn.bad())
 	{
 		cout << "Corrupt file" << endl;
 		return;
-	}
+    }
 	string item;
 	facePtr contact;
-	getline(fileIn, network);
-	for(int i=0;i<network;i++)
+	getline(fileIn, num);
+    stringstream convert(num);
+    //should convert string to int....
+    if (!(convert >> num2))
+        num2 = 0;
+        
+    network = num2;
+    for(int i=0;i<network;i++)
 	{
 		if(fileIn.bad())
 			break;
-		face person = new face();
+		face person; //Possibly going to cause errors. Check to see if we need "new".
 		getline(fileIn, item);
-		person.name = item;
+		person.nameIt(item);
 		contact = &person;
 		members.push_back(contact);
 	}
 	for(int i=0; i<network; i++)
 		fillInfo(fileIn);
 
-}
+} 
 
-void face::fillInfo(iftsream& file)
+void face::fillInfo(ifstream file)
 {
 	string item;
 	char type;
-	int num;
-	facePtr contact;
+	string num;
+	int num2;
+    facePtr contact;
 	getline(file, item, ",");
 	getline(file, num);
-
+    stringstream::convert(num);//should convert string to int....
+    if (!(convert >> num2))
+        num2 = 0;
+    
 	contact = getLink(item);
 	contact->friendCount = num;
 	for(int i=0; i< num; i++)

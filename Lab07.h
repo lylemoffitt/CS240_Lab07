@@ -1,26 +1,34 @@
+#include <ios>
 #include <iostream>
 #include <vector>
 #include <fstream>
 #include <string>
-#include <fstream>
 #include <algorithm>
 #include <ctime>
 #include <sstream>
 
 class face
 {
+    
+protected: //Not private so it can be inherited by master
+    int friendCount;
+	std::string name;
+
+    
 public:
+    face();
 	typedef face* fptr;
 	typedef std::vector<fptr> vectFace;
-	face();
-	face(std::string name);
-	void fillInfo(std::ifstream& file); //fills in one person's info from the text
-
+	
+	//face(std::string name);
+	void fillInfo(std::ifstream file); //fills in one person's info from the text
+    void nameIt(std::string faceName)
+    {
+        name = faceName;
+    }
+    
 private:
-
-	std::string name;
-	int friendCount;
-	vectFace kin;
+    vectFace kin;
 	vectFace coworkers;
 	vectFace friendz;
 

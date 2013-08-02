@@ -1,4 +1,4 @@
-#include "lab07.h"
+#include "Lab07.h"
 using namespace std;
 
 int main()
