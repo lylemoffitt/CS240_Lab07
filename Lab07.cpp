@@ -38,7 +38,8 @@ void face::fillInfo(iftsream& file)
 	getline(file, num);
 
 	contact = getLink(item);
-	for(int i=0; i< person.friendCount; i++)
+	contact->friendCount = num;
+	for(int i=0; i< num; i++)
 	{
 		if(file.bad())
 			break;
@@ -49,7 +50,7 @@ void face::fillInfo(iftsream& file)
 		else if(type == 'K')
 			contact->kin.push_back(getLink(item));
 		else if(type == 'C')
-			contact->coworker.push_back(getLink(item));
+			contact->coworkers.push_back(getLink(item));
 		else
 			cout << "Invalid Type" << endl;
 	}
@@ -64,5 +65,44 @@ facePtr master::getLink(string theName)
 	}
 	cout << "Invalid FriendFace Name" << endl;
 	return nullptr;
+}
+
+vectFace master::getCat(char category, std::string personName)
+{
+	facePtr contact = getLink(personName);
+	char type = category;
+	vectFace fptrTemp;
+	int num;
+	if(type == 'F')
+		num = contact->friendz.size();
+	else if(type == 'K')
+		num = contact->kin.size();
+	else if(type == 'C')
+		num = contact->coworkers.size();
+	else
+		cout << "Invalid Category" << endl;
+	for(int i=0; i< num; i++)
+	{
+		if(type == 'F')
+			fptrTemp.push_back( contact->friendz[i] );
+		else if(type == 'K')
+			fptrTemp.push_back( contact->kin[i] );
+		else if(type == 'C')
+			fptrTemp.push_back( contact->coworkers[i] );
+		else
+			cout << "Invalid Category" << endl;
+	}
+	return fptrTemp;
+}
+
+void master::vewCat(char category, std::string personName)
+{
+	facePtr contact = getLink(personName);
+	char type = category;
+	vectFace iterator it;
+	for(it= fptrTemp.begin(); it!=fptrTemp.end(); it++)
+	{
+		cout << (*it)->name << endl;
+	}
 }
 
