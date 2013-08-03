@@ -7,48 +7,48 @@
 #include <ctime>
 #include <sstream>
 
-class face
+class god
 {
-    
-protected: //Not private so it can be inherited by master
-    int friendCount;
-	std::string name;
-
-    
-public:
-    face();
-	typedef face* fptr;
-	typedef std::vector<fptr> vectFace;
-	
-	//face(std::string name);
-	void fillInfo(std::ifstream file); //fills in one person's info from the text
-    void nameIt(std::string faceName)
-    {
-        name = faceName;
-    }
-    
 private:
-    vectFace kin;
-	vectFace coworkers;
-	vectFace friendz;
 
-};
+	struct yofile
+	{
+		int friendCount; //Number of friends this person has
+		std::string name; //Their name
+		std::vector<yofile*> kin; //The
+		std::vector<yofile*> coworkers;
+		std::vector<yofile*> friendz;
 
-class master: face
-{
-public:
-	typedef fptr facePtr;
-	master();
-	void readIn(std::string fileName); //reads in file to master vector and creates member objects
-	bool chkCommon(facePtr one, facePtr two); //used for checking existance of non mutual friends & for if graph connections
-	facePtr getLink(std::string theName); //compares string with vector of pointers to members of the network and returns its address
-	vectFace getCat(char category, std::string personName);
-	void viewCat(char category, std::string personName);//return a list of references to all the people who have the given relationship to person
-
-
-private:
+		yofile() // Not sure if we need this, but i added to be safe.
+		{
+			friendCount = 0;
+			name		= "";
+			kin			= nullptr;
+			coworkers	= nullptr;
+			friendz		= nullptr;
+		}
+	};
+	//god's data is holy ... ('cuz of all the zeros)
 	int network;
-	std::vector<facePtr> members;
+	std::vector<yofile*> members;
+
+public:
+	typedef yofile* yoPtr;
+	typedef std::vector<yofile*> yolodex; //it's better than a rolodex
+	typedef yolodex* pokedex;
+
+	god();
+
+	//yofile(std::string name);
+	void fillInfo(std::ifstream file); //fills in one person's info from the text
+	void readIn(std::string fileName); //reads in file to god vector and creates member objects
+	bool chkCommon(yoPtr one, yoPtr two); //used for checking existance of non mutual friends & for if graph connections
+	yoPtr getLink(std::string theName); //compares string with vector of pointers to members of the network and returns its address
+	pokedex getCat(char category, std::string pName);
+	void viewCat(char category, std::string pName);//return a list of references to all the people who have the given relationship to person
+	void viewAll(std::string pName);
+
+
 };
 
 

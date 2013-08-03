@@ -2,31 +2,31 @@
 
 using namespace std;
 
-void master::readIn(string fileName)
+void god::readIn(string fileName)
 {
-    string num;
-    int num2;
+	string num;
+	int num2;
 
 	ifstream fileIn(fileName);
 	if(fileIn.bad())
 	{
 		cout << "Corrupt file" << endl;
 		return;
-    }
+	}
 	string item;
-	facePtr contact;
+	yoPtr contact;
 	getline(fileIn, num);
-    stringstream convert(num);
-    //should convert string to int....
-    if (!(convert >> num2))
-        num2 = 0;
-        
-    network = num2;
-    for(int i=0;i<network;i++)
+	stringstream convert(num);
+	//should convert string to int....
+	if (!(convert >> num2))
+		num2 = 0;
+
+	network = num2;
+	for(int i=0;i<network;i++)
 	{
 		if(fileIn.bad())
 			break;
-		face person; //Possibly going to cause errors. Check to see if we need "new".
+		yofile person; //Possibly going to cause errors. Check to see if we need "new".
 		getline(fileIn, item);
 		person.nameIt(item);
 		contact = &person;
@@ -35,21 +35,21 @@ void master::readIn(string fileName)
 	for(int i=0; i<network; i++)
 		fillInfo(fileIn);
 
-} 
+}
 
-void face::fillInfo(ifstream file)
+void god::fillInfo(ifstream file)
 {
 	string item;
 	char type;
 	string num;
 	int num2;
-    facePtr contact;
+	yoPtr contact;
 	getline(file, item, ",");
 	getline(file, num);
-    stringstream::convert(num);//should convert string to int....
-    if (!(convert >> num2))
-        num2 = 0;
-    
+	stringstream convert(num);//should convert string to int....
+	if (!(convert >> num2))
+		num2 = 0;
+
 	contact = getLink(item);
 	contact->friendCount = num;
 	for(int i=0; i< num; i++)
@@ -69,22 +69,24 @@ void face::fillInfo(ifstream file)
 	}
 }
 
-facePtr master::getLink(string theName)
+god::yoPtr god::getLink(string theName)
 {
 	for(int i=0; i<network; i++)
 	{
 		if(theName == members[i]->name)
-			return (facePtr)members[i];
+			return (yoPtr)members[i];
 	}
-	cout << "Invalid FriendFace Name" << endl;
+	cout << "Invalid Friendyofile Name" << endl;
 	return nullptr;
 }
 
-vectFace master::getCat(char category, std::string personName)
+god::pokedex god::getCat(char category, string pName)
 {
-	facePtr contact = getLink(personName);
+	yoPtr contact = getLink(pName);
 	char type = category;
-	vectFace fptrTemp;
+	//pokedex = typedef std::vector<fptr>
+	//finding the size of the inquired list for the member passed in
+	pokedex fptrTemp;
 	int num;
 	if(type == 'F')
 		num = contact->friendz.size();
@@ -94,6 +96,7 @@ vectFace master::getCat(char category, std::string personName)
 		num = contact->coworkers.size();
 	else
 		cout << "Invalid Category" << endl;
+	//creates a vector of the contacts of the specified member
 	for(int i=0; i< num; i++)
 	{
 		if(type == 'F')
@@ -108,14 +111,38 @@ vectFace master::getCat(char category, std::string personName)
 	return fptrTemp;
 }
 
-void master::vewCat(char category, std::string personName)
+void god::viewCat(char category, string pName)
 {
-	facePtr contact = getLink(personName);
-	char type = category;
-	vectFace iterator it;
-	for(it= fptrTemp.begin(); it!=fptrTemp.end(); it++)
+	pokedex profile = getCat(category,pName);
+	for( int i=0,j=profile->size(); i<j; i++ )
 	{
-		cout << (*it)->name << endl;
+		cout << profile->at(i).name << endl;
 	}
 }
+
+void god::viewAll(std::string pName)
+{
+	char cat[3] = "FCK";
+	for(int j=0; j<3 ; j++)
+	{
+		viewCat(cat[j],pName);
+	}
+}
+
+god::pokedex god::getRelations(string relat, string pName)
+/* "FK", "Bob" will show the friends of the kin of bob
+ * "A" ,"Bob" will show all the people bob knows
+ * "AA" , "Bob" will show all the above and everyone they know.
+ */
+{
+	pokedex fptrTemp;
+	if (relat.length() <= 1){
+		char rel = relat[0];//get the last char in string
+		fptrTemp = getCat(rel, pName);
+		return fptrTemp;
+	}
+	fptrTemp = getCat(relat, pName);
+}
+
+
 
