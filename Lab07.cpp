@@ -80,13 +80,22 @@ god::yoPtr god::getLink(string theName)
 	return nullptr;
 }
 
-god::pokedex god::getCat(char category, string pName)
+god::pokedex god::getCat(char type, string pName)
 {
 	yoPtr contact = getLink(pName);
-	char type = category;
 	//pokedex = typedef std::vector<fptr>
 	//finding the size of the inquired list for the member passed in
 	pokedex fptrTemp;
+	if(type == 'A')//put this in overloaded getCat?
+	{
+		char cat[3] = "FCK";
+		for(int j=0; j<3 ; j++)
+		{
+			pokedex recTemp = getCat(cat[j], pName);
+			fptrTemp.insert(fptrTemp.end(), recTemp.begin(), recTemp.end());
+		}
+		return fptrTemp;
+	}
 	int num;
 	if(type == 'F')
 		num = contact->friendz.size();
@@ -114,9 +123,9 @@ god::pokedex god::getCat(char category, string pName)
 void god::viewCat(char category, string pName)
 {
 	pokedex profile = getCat(category,pName);
-	for( int i=0,j=profile->size(); i<j; i++ )
+	for( int i=0,j=profile.size(); i<j; i++ )
 	{
-		cout << profile->at(i).name << endl;
+		cout << profile[i].name << endl;
 	}
 }
 
@@ -130,19 +139,58 @@ void god::viewAll(std::string pName)
 }
 
 god::pokedex god::getRelations(string relat, string pName)
-/* "FK", "Bob" will show the friends of the kin of bob
- * "A" ,"Bob" will show all the people bob knows
- * "AA" , "Bob" will show all the above and everyone they know.
+/*Recursive function with multiple possible call options.
+ *Options:	A = ALL
+ *			F = friendz
+ *			C = coworkers
+ *			K = kin
+ *The letters specify the relationship path to follow.
+ *Examples: *//*
+ * "FK", "Bob" will show the friends of the kin of Bob
+ * "A" , "Bob" will show all the people bob knows
+ * "AA", "Bob" will show all the above and everyone they know.
  */
+
 {
-	pokedex fptrTemp;
+	char R = (char)relat[ relat.length() ]; //Store the last char
+	pokedex dexTemp= getCat(R, pName);// Get the corresponding pointer
 	if (relat.length() <= 1){
-		char rel = relat[0];//get the last char in string
-		fptrTemp = getCat(rel, pName);
-		return fptrTemp;
+		//catch the recursion call and return when only one letter is left
+		return dexTemp;
 	}
-	fptrTemp = getCat(relat, pName);
+	relat.erase(relat.length());//
+	for( int i=0, j=dexTemp.size(); i<j; i++ )
+	{
+		//Fetch all the links from the person's group
+		pokedex recTemp = getRelations(relat, dexTemp[i].name);
+		dexTemp.insert(dexTemp.end(), recTemp.begin(), recTemp.end());
+		//Append the recieved vector's data to the once currently in use
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
