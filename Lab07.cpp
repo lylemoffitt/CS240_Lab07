@@ -6,7 +6,7 @@ void god::readIn(string fileName)
 {
 	string num;
 	int num2;
-
+    size_t tempNum;
 	ifstream fileIn(fileName);
 	if(fileIn.bad())
 	{
@@ -16,11 +16,12 @@ void god::readIn(string fileName)
 	string item;
 	yoPtr contact;
 	getline(fileIn, num);
-	stringstream convert(num);
-	//should convert string to int....
-	if (!(convert >> num2))
+	stringstream convert(num);     //should convert string to int...
+    int = stoi(num, tempNum, 10);//Is this the right one? it has more paramters  look at line uhh 33   hah cool...
+	//don't think we need this v
+    if (!(convert >> num2))//i'll look it up. it has the string, size_t and the base that you want back in, so base 10
 		num2 = 0;
-
+    num2 = *tempNum;
 	network = num2;
 	for(int i=0;i<network;i++)
 	{
@@ -28,7 +29,7 @@ void god::readIn(string fileName)
 			break;
 		yofile person; //Possibly going to cause errors. Check to see if we need "new".
 		getline(fileIn, item);
-		person.nameIt(item);
+		person.name = item; //nameIt replaced with assignment
 		contact = &person;
 		members.push_back(contact);
 	}
@@ -147,8 +148,8 @@ god::pokedex god::getRelations(string relat, string pName)
  *The letters specify the relationship path to follow.
  *Examples: *//*
  * "FK", "Bob" will show the friends of the kin of Bob
- * "A" , "Bob" will show all the people bob knows
- * "AA", "Bob" will show all the above and everyone they know.
+ * "A" ,"Bob" will show all the people bob knows
+ * "AA" , "Bob" will show all the above and everyone they know.
  */
 
 {
@@ -165,32 +166,8 @@ god::pokedex god::getRelations(string relat, string pName)
 		pokedex recTemp = getRelations(relat, dexTemp[i].name);
 		dexTemp.insert(dexTemp.end(), recTemp.begin(), recTemp.end());
 		//Append the recieved vector's data to the once currently in use
-	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 
 
