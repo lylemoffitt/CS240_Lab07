@@ -4,7 +4,7 @@ using namespace std;
 
 void god::readIn(string fileName)
 {
-	string num;
+    string num;
 	int num2;
     size_t *tempNum;
     
@@ -24,7 +24,7 @@ void god::readIn(string fileName)
 	//	num2 = 0;
 	network = num2;
 	yofile tempArr[100];
-	for(int i=0;i<network;i++)
+    for(int i=0;i<network;i++)
 	{
 		if(fileIn.eof())
 			break;
@@ -69,15 +69,15 @@ void god::fillInfo(ifstream file)
         }
         else if(type == "K")
 		{
-			contact->kin.push_back(getLink(item));
+            contact->kin.push_back(getLink(item));
             contact->allContacts.push_back(getLink(item));
 		}
         else if(type == "C")
 		{
-			contact->coworkers.push_back(getLink(item));
+            contact->coworkers.push_back(getLink(item));
             contact->allContacts.push_back(getLink(item));
 		}
-		else
+        else
 			cout << "Invalid Type" << endl;
 	}
 }
@@ -150,22 +150,33 @@ void god::viewAll(std::string pName)
 	}
 }
 
-//god::pokedex god::getRelations(string relat, string pName)
-god::yolodex god::getRelations(string relat, string pName)
-/* "FK", "Bob" will show the friends of the kin of bob
+god::pokedex god::getRelations(string relat, string pName)
+/*Recursive function with multiple possible call options.
+ *Options:	A = ALL
+ *			F = friendz
+ *			C = coworkers
+ *			K = kin
+ *The letters specify the relationship path to follow.
+ *Examples: *//*
+ * "FK", "Bob" will show the friends of the kin of Bob
  * "A" ,"Bob" will show all the people bob knows
  * "AA" , "Bob" will show all the above and everyone they know.
  */
 
 {
-    char ret;
-	pokedex fptrTemp;
+	char R = (char)relat[ relat.length() ]; //Store the last char
+	pokedex dexTemp= getCat(R, pName);// Get the corresponding pointer
 	if (relat.length() <= 1){
-		rel = relat[0];//get the last char in string
-		fptrTemp = getCat(rel, pName);
-		return fptrTemp;
+		//catch the recursion call and return when only one letter is left
+		return dexTemp;
 	}
-	fptrTemp = getCat(relat.at(1), pName);
+	relat.erase(relat.length());//
+	for( int i=0, j=dexTemp.size(); i<j; i++ )
+	{
+		//Fetch all the links from the person's group
+		pokedex recTemp = getRelations(relat, dexTemp[i].name);
+		dexTemp.insert(dexTemp.end(), recTemp.begin(), recTemp.end());
+		//Append the recieved vector's data to the once currently in use
 }
 
 //bool chkCommon(yoPtr one, yoPtr two); 
@@ -177,14 +188,14 @@ god::yolodex god::getRelations(string relat, string pName)
 //so it goes through all of the contacts
 //then at the end be return false. 
 bool god::chkCommon(yoPtr one, yoPtr two)
-	{
+{
     yoPtr memberPtr = getLink(one);
 	int i=0;
 	for(i=0; i<memberPtr->allContacts.size(); i++)
 	{
 		if(two == memberPtr->allContacts[i]->name)
 			return true;
-}
+	}
     for(i=0; i<allContacts.sze();i++)
 	    chkCommon(memberPtr->allContacts[i].name, two);
     return false;//   ^
@@ -192,8 +203,7 @@ bool god::chkCommon(yoPtr one, yoPtr two)
 	
 	//memberPtr = memberPtr->
 
-}
-
+}      
 void god:: nonmutual()
 {
     yoPtr temp = nullptr;
