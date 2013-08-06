@@ -1,10 +1,11 @@
-6
+7
 Alice
 Bob
 Carl
 Danielle
 Elsie
 Fred
+Jorge
 Bob, 4
 Alice, F
 Carl, F
@@ -30,4 +31,5 @@ Bob, F
 Danielle, C
 Fred, F
 Elsie, F
+Jorge, 0
 

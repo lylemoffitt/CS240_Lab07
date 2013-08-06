@@ -3,7 +3,8 @@ using namespace std;
 
 int main(int argc, char **argv)
 {
-	God god;
+    god god;
+	
 	long sec1, sec2;
 	long sstart, send;
 	timeval start, end;
@@ -54,12 +55,12 @@ int main(int argc, char **argv)
 			case 1:
 				cout << "\nEnter your name: ";
 				cin >> name1;
-				god::viewAll(name1);
+				god.viewAll(name1);
 				break;
 			case 2:
 				cout << "\nEnter your name: ";
 				cin >> name1;
-				god::suggestedFriends(name1);
+				god.suggestedFriends(name1);
 				break;
 			case 3:
 				cout << "\nEnter your name: ";
@@ -67,7 +68,7 @@ int main(int argc, char **argv)
 				cout << "\nEnter their name: ";
 				cin >> name2;
 				gettimeofday(&end, NULL);
-				if( god::chkCommon(name1,name2) )
+				if( god.chkCommon(name1,name2) )
 				{
 					cout << "\nYou are connected!" << endl;
 				}else
@@ -77,7 +78,7 @@ int main(int argc, char **argv)
 				break;
 			case 4:
 				gettimeofday(&end, NULL);
-				god::nonMutual();
+				god.nonMutual();
 				break;
 			case 5:
 				cout << "Goodbye" << endl;
@@ -90,6 +91,6 @@ int main(int argc, char **argv)
 
 	// End menu
 
-
+	
 	return 0;
 }
