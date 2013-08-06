@@ -1,6 +1,4 @@
-#ifndef LAB07_H
-
-//#include <ios>
+#include <ios>
 #include <iostream>
 #include <vector>
 #include <fstream>
@@ -8,8 +6,6 @@
 #include <algorithm>
 #include <ctime>
 #include <sstream>
-
-
 
 class god
 {
@@ -22,7 +18,7 @@ private:
 		std::vector<yofile*> kin; //The
 		std::vector<yofile*> coworkers;
 		std::vector<yofile*> friendz;
-		std::vector<yofile*> allContacts;
+        std::vector<yofile*> allContacts;
 
 		yofile() // Not sure if we need this, but i added to be safe.
 		{
@@ -49,17 +45,16 @@ public:
 	void fillInfo(std::ifstream file); //fills in one person's info from the text
 	void readIn(std::string fileName); //reads in file to god vector and creates member objects
 	bool chkCommon(yoPtr one, yoPtr two); //used for checking existance of non mutual friends & for if graph connections
-
-	yoPtr getLink(std::string theName); //compares string with vector of pointers to members of the network and returns its address
+	
+    yoPtr getLink(std::string theName); //compares string with vector of pointers to members of the network and returns its address
 	pokedex getCat(char type, std::string pName);
 	void viewCat(char category, std::string pName);//return a list of references to all the people who have the given relationship to person
 	void viewAll(std::string pName);
 	pokedex getRelations(std::string relat, std::string pName);
-	void nonmutual();
+    void nonmutual();
 
 };
 
-#endif //LAB07_H
 
 
 
