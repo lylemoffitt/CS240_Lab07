@@ -2,12 +2,6 @@
 
 using namespace std;
 
-god::god()
-{
-    network = 0;
-	members.reserve(10);
-	yofile();
-}
 
 
 void god::readIn(string fileName)
@@ -18,7 +12,7 @@ void god::readIn(string fileName)
 
 	fstream fileIn;
 	fileIn.open(fileName.c_str(),fstream::in);
-	
+
 	if(fileIn.fail())
 	{
 		cout << "Corrupt file" << endl;
@@ -29,7 +23,7 @@ void god::readIn(string fileName)
 	getline(fileIn, num);
 	//stringstream convert(num);
 	num2 = stoi(num, tempNum, 10);
-	
+
 	//should convert string to int....
 	//if (!(convert >> num2))
 		//num2 = 0;
@@ -47,7 +41,7 @@ void god::readIn(string fileName)
 		//yoPtr contact = &person;
 		tempArr[i] = person;
 		members.push_back(&tempArr[i]);
-		
+
 	}
 	for(int i=0; i<network; i++)
 		fillInfo(fileIn);
@@ -76,7 +70,7 @@ void god::readIn(string fileName)
 	viewCat('F', "Carl");
 	viewCat('K', "Carl");
 	viewCat('C', "Carl");
-	
+
 	cout << "a, b, d, c, f, e";
 	viewAll("Alice");
 	viewAll("Bob");
@@ -84,7 +78,7 @@ void god::readIn(string fileName)
 	viewAll("Carl");
 	viewAll("Fred");
 	viewAll("Elsie");
-	
+
 	int i =3;
 	i = chkCommon("Alice", "Bob");
 	cout << i << endl;
@@ -122,7 +116,7 @@ void god::readIn(string fileName)
 	cout << i << endl;
 	i = chkCommon("George", "Bob");
 	cout << i << endl;
-	
+
 
 	nonMutual();
 	*/
@@ -146,7 +140,7 @@ void god::readIn(string fileName)
 
 }
 
-void god::fillInfo(ifstream& file)
+void god::fillInfo(fstream file)
 {
 	string item, type;
 	string num;
@@ -283,7 +277,7 @@ bool god::chkCommon(string one, string two)
 			return true;
 	}
 	return false;
-	
+
 	//memberPtr = memberPtr->
 
 }
@@ -292,33 +286,33 @@ void god::nonMutual()
 {
 	int flag=0;
 	//yoPtr temp = nullptr;
-    for(int i = 0; i < network; i++)
-    {
-        for(int j=0; j <members[i]->friendCount; j++)
-        {
-            yoPtr match = getLink(members[i]->allContacts[j]->name);
+	for(int i = 0; i < network; i++)
+	{
+		for(int j=0; j <members[i]->friendCount; j++)
+		{
+			yoPtr match = getLink(members[i]->allContacts[j]->name);
 			if(match->friendCount==0)
 				flag =1;
 			for(int k=0; k <match->friendCount; k++)
-                {
-                  //  if(members[i]->allContacts[j]->name == match->name && members[i]->name == match->allContacts[k]->name)
+				{
+				  //  if(members[i]->allContacts[j]->name == match->name && members[i]->name == match->allContacts[k]->name)
 					if( members[i]->name != match->allContacts[k]->name)
 					{
 						flag=1;
 					}
-                    else
-                    {
+					else
+					{
 						flag=0;
 						break;
 					}
-                } 
+				}
 			if(flag == 1)
 			{
 				cout<<members[i]->name<<" and "<<match->name<<endl;
 				flag = 0;
 			}
-        }
-    }
+		}
+	}
 }
 
 
@@ -350,7 +344,7 @@ void god::suggestedFriends(string pName)
 	for(i=0; i<memPtr->coworkers.size();i++)
 		for(j=0; j<memPtr->coworkers[i]->friendz.size();j++)
 			sugFrList.push_back(memPtr->coworkers[i]->friendz[j]->name);
-	
+
 	for(i=0; i<memPtr->friendz.size();i++)
 		for(j=0; j<memPtr->friendz[i]->coworkers.size();j++)
 			sugFrList.push_back(memPtr->friendz[i]->coworkers[j]->name);
@@ -368,7 +362,7 @@ void god::suggestedFriends(string pName)
 	int k, flag=0;
 	i=0;
 
-	
+
 	while (i < sugFrList.size())
 		{
 			for(j=0;j<matches.size();j++)
@@ -380,10 +374,10 @@ void god::suggestedFriends(string pName)
 				matches.push_back(sugFrList[i]);
 			i++;
 		}
-	
+
 	for(i=0;i<matches.size();i++)
 	{
-		
+
 			for(j=0;j<memPtr->allContacts.size(); j++)
 			{
 				if(matches[i].compare(memPtr->allContacts[j]->name) ==0)
@@ -397,9 +391,10 @@ void god::suggestedFriends(string pName)
 				}
 			}
 			if((pName.compare(matches[i]) != 0) && flag ==1)
-				cout << matches[i] << endl;			
+				cout << matches[i] << endl;
 	}
 
 	sugFrList.clear();
-	
+
 }
+

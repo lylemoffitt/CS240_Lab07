@@ -1,5 +1,5 @@
 COMPILER = g++
-FLAGS = -g -std=c++0x
+FLAGS = -g -std=c++11
 OUTPUT_NAME = submission
 
 all: Lab07.cpp Driver.cpp
