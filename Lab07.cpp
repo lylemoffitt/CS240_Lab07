@@ -1,15 +1,18 @@
 #include "Lab07.h"
+#define LAB07_H
 
 using namespace std;
 
 void god::readIn(string fileName)
 {
-    string num;
+	string num;
 	int num2;
-    size_t *tempNum;
-    
-	ifstream fileIn(fileName);
-	if(fileIn.bad())
+	size_t *tempNum;
+
+	fstream fileIn;
+	fileIn.open(fileName.c_str(),fstream::in);
+
+	if(fileIn.fail())
 	{
 		cout << "Corrupt file" << endl;
 		return;
@@ -18,13 +21,13 @@ void god::readIn(string fileName)
 	//yoPtr contact = nullptr;
 	getline(fileIn, num);
 	//stringstream convert(num);     //should convert string to int...
-    num2 = stoi(num, tempNum, 10);
+	num2 = stoi(num, tempNum, 10);
 	//don't think we need this v
-    //if (!(convert >> num2))
+	//if (!(convert >> num2))
 	//	num2 = 0;
 	network = num2;
 	yofile tempArr[100];
-    for(int i=0;i<network;i++)
+	for(int i=0;i<network;i++)
 	{
 		if(fileIn.eof())
 			break;
@@ -60,24 +63,24 @@ void god::fillInfo(ifstream file)
 			break;
 		getline(file, item, ",");
 		getline(file, type);
-        if(type.at(0) == ' ')
-            type.erase(0,1);
+		if(type.at(0) == ' ')
+			type.erase(0,1);
 		if(type == "F")
-        {
+		{
 			contact->friendz.push_back(getLink(item));
-            contact->allContacts.push_back(getLink(item));
-        }
-        else if(type == "K")
-		{
-            contact->kin.push_back(getLink(item));
-            contact->allContacts.push_back(getLink(item));
+			contact->allContacts.push_back(getLink(item));
 		}
-        else if(type == "C")
+		else if(type == "K")
 		{
-            contact->coworkers.push_back(getLink(item));
-            contact->allContacts.push_back(getLink(item));
+			contact->kin.push_back(getLink(item));
+			contact->allContacts.push_back(getLink(item));
 		}
-        else
+		else if(type == "C")
+		{
+			contact->coworkers.push_back(getLink(item));
+			contact->allContacts.push_back(getLink(item));
+		}
+		else
 			cout << "Invalid Type" << endl;
 	}
 }
@@ -105,7 +108,7 @@ god::yolodex god::getCat(char category, string pName)
 	//pokedex = typedef std::vector<fptr>
 	//finding the size of the inquired list for the member passed in
 //	pokedex fptrTemp;
-    yolodex vecTemp;
+	yolodex vecTemp;
 	int num;
 	if(type == 'F')
 		num = contact->friendz.size();
@@ -128,7 +131,7 @@ god::yolodex god::getCat(char category, string pName)
 			cout << "Invalid Category" << endl;
 	}
   //  fptrTemp = &vecTemp;
-    //or *fptrTemp = vecTemp; //not sure which is better
+	//or *fptrTemp = vecTemp; //not sure which is better
 	return vecTemp;
 }
 
@@ -179,58 +182,58 @@ god::pokedex god::getRelations(string relat, string pName)
 		//Append the recieved vector's data to the once currently in use
 }
 
-//bool chkCommon(yoPtr one, yoPtr two); 
+//bool chkCommon(yoPtr one, yoPtr two);
 //^ that's what we had before. I changed it to string instead
 //seems better but I'm getting an error at the last line
 //chkCommon(memberPtr->allContacts[i].name, two);
 //the error is "god::yoPtr memberPtr \n Error: expression must have class type"
-//also I think there's supposed to be a for loop around the recursive part 
+//also I think there's supposed to be a for loop around the recursive part
 //so it goes through all of the contacts
-//then at the end be return false. 
+//then at the end be return false.
 bool god::chkCommon(yoPtr one, yoPtr two)
 {
-    yoPtr memberPtr = getLink(one);
+	yoPtr memberPtr = getLink(one);
 	int i=0;
 	for(i=0; i<memberPtr->allContacts.size(); i++)
 	{
 		if(two == memberPtr->allContacts[i]->name)
 			return true;
 	}
-    for(i=0; i<allContacts.sze();i++)
-	    chkCommon(memberPtr->allContacts[i].name, two);
-    return false;//   ^
-                //|-error-|
-	
+	for(i=0; i<allContacts.sze();i++)
+		chkCommon(memberPtr->allContacts[i].name, two);
+	return false;//   ^
+				//|-error-|
+
 	//memberPtr = memberPtr->
 
-}      
+}
 void god:: nonmutual()
 {
-    yoPtr temp = nullptr;
-    for(int i = 0; i < network; i++)
-    {
-        for(int j=0; j <members[i]->friendCount; j++)
-        {
-            yoPtr match= getLink(temp->members[i]->allContacts[j]->name);
-            for(int k=0; k <match->friendcount; k++)
-                {
-                    if(temp->members[i]->allContacts[j]->name==match->allContacts[k])
-                    {
-                        return NULL;
-                    }
-                    else
-                    {
-                    cout<<temp->members[i]->name<<"and"<<temp->members[i]->allContacts[j]->name<<endl;
-                    }
-                } 
-        }
-    }
+	yoPtr temp = nullptr;
+	for(int i = 0; i < network; i++)
+	{
+		for(int j=0; j <members[i]->friendCount; j++)
+		{
+			yoPtr match= getLink(temp->members[i]->allContacts[j]->name);
+			for(int k=0; k <match->friendcount; k++)
+				{
+					if(temp->members[i]->allContacts[j]->name==match->allContacts[k])
+					{
+						return NULL;
+					}
+					else
+					{
+					cout<<temp->members[i]->name<<"and"<<temp->members[i]->allContacts[j]->name<<endl;
+					}
+				}
+		}
+	}
 }
 
 
 void god::suggestedFriends(string pName)
 {
-    yoPtr memPtr = getLink(pName);
+	yoPtr memPtr = getLink(pName);
 	yoPtr memFrPtr = memPtr->friendz[0];
 	vector<string> sugFrList;
 	for(int i=0; i<memPtr->friendz.size();i++)
@@ -256,7 +259,7 @@ void god::suggestedFriends(string pName)
 	for(int i=0; i<memPtr->coworkers.size();i++)
 		for(int j=0; j<memPtr->coworkers[i]->friendz.size();j++)
 			sugFrList.push_back(memPtr->coworkers[i]->friendz[j]->name);
-	
+
 	for(int i=0; i<memPtr->friendz.size();i++)
 		for(int j=0; j<memPtr->friendz[i]->coworkers.size();j++)
 			sugFrList.push_back(memPtr->friendz[i]->coworkers[j]->name);
@@ -282,10 +285,10 @@ void god::suggestedFriends(string pName)
 				matches.push_back(sugFrList[i]);
 			i++;
 		}
-        
-        
-    for(i=0;i<matches.size();i++)
-    		cout << matches[i] << endl;
+
+
+	for(i=0;i<matches.size();i++)
+			cout << matches[i] << endl;
 		sugFrList.clear();
 	/*
 	char rel;
